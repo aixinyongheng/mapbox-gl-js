@@ -9,8 +9,9 @@ export class CanonicalTileID {
     x: number;
     y: number;
     key: number;
+    zoomoffset: number; // gxsn
 
-    constructor(z: number, x: number, y: number) {
+    constructor(z: number, x: number, y: number, zoomoffset: number) {
         assert(z >= 0 && z <= 25);
         assert(x >= 0 && x < Math.pow(2, z));
         assert(y >= 0 && y < Math.pow(2, z));
@@ -18,6 +19,7 @@ export class CanonicalTileID {
         this.x = x;
         this.y = y;
         this.key = calculateKey(0, z, z, x, y);
+        this.zoomoffset = zoomoffset;
     }
 
     equals(id: CanonicalTileID): boolean {
@@ -25,13 +27,16 @@ export class CanonicalTileID {
     }
 
     // given a list of urls, choose a url template and return a tile URL
-    url(urls: Array<string>, scheme: ?string): string {
+    url(urls: Array<string>, scheme: ?string, zoomoffset: ?int): string {
         const bbox = getTileBBox(this.x, this.y, this.z);
         const quadkey = getQuadkey(this.z, this.x, this.y);
-
+        let z_after = this.z;
+        if (zoomoffset) {
+            z_after = z_after - 1;
+        }
         return urls[(this.x + this.y) % urls.length]
             .replace('{prefix}', (this.x % 16).toString(16) + (this.y % 16).toString(16))
-            .replace(/{z}/g, String(this.z))
+            .replace(/{z}/g, String(z_after))
             .replace(/{x}/g, String(this.x))
             .replace(/{y}/g, String(scheme === 'tms' ? (Math.pow(2, this.z) - this.y - 1) : this.y))
             .replace('{quadkey}', quadkey)

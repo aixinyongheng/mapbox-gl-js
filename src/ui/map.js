@@ -129,7 +129,8 @@ type MapOptions = {
     locale?: Object,
     projection?: ProjectionSpecification | string,
     language?: string,
-    worldview?: string
+    worldview?: string,
+    epsg?: string
 };
 
 const defaultMinZoom = -2;
@@ -182,7 +183,8 @@ const defaultOptions = {
     transformRequest: null,
     accessToken: null,
     fadeDuration: 300,
-    crossSourceCollisions: true
+    crossSourceCollisions: true,
+    epsg: 'EPSG:3857'
 };
 
 /**
@@ -3260,7 +3262,7 @@ class Map extends Camera {
         if (this._loaded && !this._fullyLoaded && !somethingDirty) {
             this._fullyLoaded = true;
             // Following line is billing related code. Do not change. See LICENSE.txt
-            this._authenticate();
+            this._authenticate(); // 去掉token验证，本地离线调试使用
             PerformanceUtils.mark(PerformanceMarkers.fullLoad);
         }
     }

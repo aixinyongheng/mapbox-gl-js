@@ -41,6 +41,7 @@ export interface Source {
     minzoom: number,
     maxzoom: number,
     tileSize: number,
+    zoomoffset?: number, // snzt
     attribution?: string,
 
     roundZoom?: boolean,

@@ -20,7 +20,10 @@ export function mercatorXfromLng(lng: number): number {
 }
 
 export function mercatorYfromLat(lat: number): number {
-    return (180 - (180 / Math.PI * Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360)))) / 360;
+    // 如果epsg:3857
+    // return (180 - (180 / Math.PI * Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360)))) / 360;
+    // 如果epsg:4490
+    return (90 - lat) / 360;
 }
 
 export function mercatorZfromAltitude(altitude: number, lat: number): number {
@@ -32,8 +35,12 @@ export function lngFromMercatorX(x: number): number {
 }
 
 export function latFromMercatorY(y: number): number {
+    // const y2 = 180 - y * 360;
+    // return 360 / Math.PI * Math.atan(Math.exp(y2 * Math.PI / 180)) - 90;
     const y2 = 180 - y * 360;
-    return 360 / Math.PI * Math.atan(Math.exp(y2 * Math.PI / 180)) - 90;
+    //return 360 / Math.PI * Math.atan(Math.exp(y2 * Math.PI / 180)) - 90;
+    // return 90 - 360 * y;
+    return 90 - 360 * y;
 }
 
 export function altitudeFromMercatorZ(z: number, y: number): number {
@@ -87,6 +94,7 @@ class MercatorCoordinate {
         this.x = +x;
         this.y = +y;
         this.z = +z;
+  
     }
 
     /**
