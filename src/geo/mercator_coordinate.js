@@ -1,6 +1,7 @@
 // @flow
 
 import LngLat, {earthRadius} from '../geo/lng_lat.js';
+import {clamp} from '../util/util.js';
 import type {LngLatLike} from '../geo/lng_lat.js';
 
 /*
@@ -39,8 +40,9 @@ export function lngFromMercatorX(x: number): number {
 export function latFromMercatorY(y: number): number {
     if (window.CRS === 'EPSG:4490' || window.CRS === 'EPSG:4326') {
         const y2 = 180 - y * 360;
-        return 90 - 360 * y;
+        return clamp(90 - y * 360, -90, 90);
     } else  {
+        debugger;
         const y2 = 180 - y * 360;
         return 360 / Math.PI * Math.atan(Math.exp(y2 * Math.PI / 180)) - 90;
     }

@@ -531,6 +531,10 @@ class Map extends Camera {
 
         if (options.maxBounds) {
             this.setMaxBounds(options.maxBounds);
+        }else if(window.CRS==='EPSG:4490'|| window.CRS==='EPSG:4326'){
+            this.setMaxBounds([[-180,90], 
+                 [180, -90]  // [east, north]
+            ]);
         }
 
         bindAll([
@@ -842,6 +846,7 @@ class Map extends Camera {
      * map.setMaxBounds(bounds);
      */
     setMaxBounds(bounds: LngLatBoundsLike): this {
+        debugger;
         this.transform.setMaxBounds(LngLatBounds.convert(bounds));
         return this._update();
     }
@@ -3263,7 +3268,7 @@ class Map extends Camera {
         if (this._loaded && !this._fullyLoaded && !somethingDirty) {
             this._fullyLoaded = true;
             // Following line is billing related code. Do not change. See LICENSE.txt
-            this._authenticate(); // 去掉token验证，本地离线调试使用
+            // this._authenticate(); // 去掉token验证，本地离线调试使用
             PerformanceUtils.mark(PerformanceMarkers.fullLoad);
         }
     }

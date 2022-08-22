@@ -30,13 +30,11 @@ export class CanonicalTileID {
     url(urls: Array<string>, scheme: ?string, zoomoffset: ?int): string {
         const bbox = getTileBBox(this.x, this.y, this.z);
         const quadkey = getQuadkey(this.z, this.x, this.y);
-        let z_after = this.z;
-        if (zoomoffset) {
-            z_after += zoomoffset;
-        }
+        const z_after = this.z;
+
         return urls[(this.x + this.y) % urls.length]
             .replace('{prefix}', (this.x % 16).toString(16) + (this.y % 16).toString(16))
-            .replace(/{z}/g, String(z_after))
+            .replace(/{z}/g, String(this.z + (zoomoffset || 0)))
             .replace(/{x}/g, String(this.x))
             .replace(/{y}/g, String(scheme === 'tms' ? (Math.pow(2, this.z) - this.y - 1) : this.y))
             .replace('{quadkey}', quadkey)
