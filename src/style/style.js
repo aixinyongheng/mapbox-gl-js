@@ -508,7 +508,6 @@ class Style extends Evented {
         if (!this._loaded) {
             return;
         }
-
         const changed = this._changed;
         if (this._changed) {
             const updatedIds = Object.keys(this._updatedLayers);

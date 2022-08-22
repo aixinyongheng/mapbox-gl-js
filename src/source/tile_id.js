@@ -32,7 +32,7 @@ export class CanonicalTileID {
         const quadkey = getQuadkey(this.z, this.x, this.y);
         let z_after = this.z;
         if (zoomoffset) {
-            z_after = z_after - 1;
+            z_after += zoomoffset;
         }
         return urls[(this.x + this.y) % urls.length]
             .replace('{prefix}', (this.x % 16).toString(16) + (this.y % 16).toString(16))
